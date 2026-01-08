@@ -1,0 +1,44 @@
+{
+  "name": "Local Codespaces Test",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "args": {
+      "VARIANT": "3.3"
+    }
+  },
+
+  "remoteUser": "vscode",
+
+  "forwardPorts": [4567],
+  "portsAttributes": {
+    "4567": {
+      "label": "Sinatra",
+      "onAutoForward": "openBrowser"
+    }
+  },
+
+  "containerEnv": {
+    "BUNDLE_PATH": "/usr/local/bundle",
+    "BUNDLE_JOBS": "4",
+    "BUNDLE_RETRY": "3"
+  },
+
+  "mounts": [
+    "source=${localWorkspaceFolderBasename}-bundle-cache,target=/usr/local/bundle,type=volume"
+  ],
+
+  "postCreateCommand": "bundle install",
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "Shopify.ruby-lsp",
+        "ms-azuretools.vscode-docker"
+      ],
+      "settings": {
+        "rubyLsp.bundleGemfile": "${workspaceFolder}/Gemfile",
+        "terminal.integrated.defaultProfile.linux": "bash"
+      }
+    }
+  }
+}
